@@ -13,13 +13,12 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/static", express.static(path.join(__dirname, "static")));
 
-app.post("/api/v1/push", (req, res) => {
-	const data = req.body;
-	if (!data.data) return res.status(400).json({"error": "Data not found"});
-	const payload = {};
-	payload[genId()] = data.data;
-	fs.writeFileSync(path.join(__dirname, "data.json"), JSON.stringify(payload));
-	res.send("Data pushed");
+app.get("/api/v1/redis/info", (req, res) => {
+	const payload = {
+		url: process.env.STORAGE_REDIS_URL
+		
+    }
+	res.json(payload);
 });
 
 const HOST = process.env.HOST || "127.0.0.1";
